@@ -1,6 +1,5 @@
-import os
 from django.conf import settings
 
 
-STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                          '/static/')
+STORAGE = getattr(settings, 'FAVICON_STORAGE', settings.DEFAULT_FILE_STORAGE)
+STORAGE_OPTIONS = getattr(settings, 'FAVICON_STORAGE_OPTIONS', {})
