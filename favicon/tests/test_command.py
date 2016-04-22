@@ -3,7 +3,7 @@ from django.core.management import execute_from_command_line
 from favicon.management.commands.generate_favicon import Command as Generate
 from favicon.management.commands.delete_favicon import Command as Delete
 from favicon.tests.utils import HANDLED_FILES, BASE_IMG, EXPECTED_FILES
-from favicon.generators import generate
+from favicon.utils import generate
 from favicon.tests.utils import FakeStorage
 
 

@@ -3,7 +3,7 @@ from django.test import TestCase
 from PIL import Image
 from favicon.tests.utils import HANDLED_FILES, BASE_IMG, EXPECTED_FILES,\
     FakeStorage
-from favicon.generators import generate, delete, PNG_SIZES, WINDOWS_PNG_SIZES
+from favicon.utils import generate, delete, PNG_SIZES, WINDOWS_PNG_SIZES
 
 SRC_REG = re.compile(r'src="/static/([^"]*)"')
 
@@ -60,4 +60,5 @@ class DeleteTest(TestCase):
         self.assertTrue(HANDLED_FILES['deleted_files'])
 
     def test_delete_not_existing(self):
+        delete(self.storage)
         delete(self.storage)

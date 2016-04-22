@@ -2,7 +2,7 @@ import os
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.storage import get_storage_class
 from favicon import settings
-from favicon.generators import generate
+from favicon.utils import generate
 
 
 class Command(BaseCommand):
