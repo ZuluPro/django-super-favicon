@@ -61,17 +61,25 @@ def generate(source_file, storage, prefix=None):
     write_file(output_file, 'ieconfig.xml')
 
 
-def delete(storage):
+def delete(storage, prefix=None):
     """
     Delete favicons from storage.
 
     :param storage: Storage where delete files
     :type storage: :class:`django.core.files.storage.Storage`
+    :param prefix: Prefix included in files' names
+    :type prefix: str
     """
-    storage.delete('favicon.ico')
+    prefix = prefix or ''
+
+    def delete_file(name):
+        name = prefix + name
+        storage.delete(name)
+
+    delete_file('favicon.ico')
     for size in PNG_SIZES:
         name = 'favicon-%s.png' % size
-        storage.delete(name)
+        delete_file(name)
     for _, name in WINDOWS_PNG_SIZES:
-        storage.delete(name)
-    storage.delete('ieconfig.xml')
+        delete_file(name)
+    delete_file('ieconfig.xml')

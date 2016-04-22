@@ -71,3 +71,18 @@ class DeleteTest(TestCase):
     def test_delete_not_existing(self):
         delete(self.storage)
         delete(self.storage)
+        self.assertFalse(HANDLED_FILES['written_files'])
+        self.assertTrue(HANDLED_FILES['deleted_files'])
+
+    def test_delete_with_prefix(self):
+        prefix = 'foo/'
+        expected_files = [prefix+fi for fi in EXPECTED_FILES]
+
+        generate(BASE_IMG, self.storage, prefix)
+        delete(self.storage, prefix)
+        for name, content in HANDLED_FILES['written_files'].items():
+            self.assertIn(name, EXPECTED_FILES)
+            self.assertNotIn(name, expected_files)
+        for name, content in HANDLED_FILES['deleted_files'].items():
+            self.assertIn(name, expected_files)
+            self.assertNotIn(name, EXPECTED_FILES)
