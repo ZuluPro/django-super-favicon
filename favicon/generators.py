@@ -4,7 +4,7 @@ from django.core.files import File
 from PIL import Image
 
 ICO_SIZES = [(16, 16), (32, 32), (48, 48), (64, 64)]
-PNG_SIZES = (32, 57, 76, 96, 120, 128, 144, 152, 180, 195, 196)
+PNG_SIZES = (32, 57, 76, 96, 120, 128, 144, 152, 180, 195, 196, 228)
 WINDOWS_PNG_SIZES = (
     ((128, 128), 'smalltile.png'),
     ((270, 270), 'mediumtile.png'),
