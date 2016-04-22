@@ -1,3 +1,4 @@
+"""Parameters for :mod:`favicon`."""
 from django.conf import settings
 
 

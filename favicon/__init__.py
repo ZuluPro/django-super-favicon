@@ -1,8 +1,10 @@
 """
-Django app for generate favicon in multiple format and write easily dedicated
-HTML tags.
+Django app for:
+- Generate favicon in multiple format
+- Put in a storage backend
+- Include HTML tags for use favicon
 """
-VERSION = (0, 1)
+VERSION = (0, 2)
 __version__ = '.'.join([str(i) for i in VERSION])
 __author__ = 'Anthony Monthe (ZuluPro)'
 __email__ = 'anthony.monthe@gmail.com'

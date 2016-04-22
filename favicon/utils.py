@@ -1,3 +1,4 @@
+"""Utilities for :mod:`favicon`."""
 from django.utils.six import BytesIO
 from django.template.loader import get_template
 from django.core.files import File
@@ -14,7 +15,17 @@ WINDOWS_PNG_SIZES = (
 
 
 def generate(source_file, storage):
+    """
+    Creates favicons from a source file and upload into storage.
+    This also create the ieconfig.xml file.
+
+    :param source_file: File to use as string (local path) or filelike object
+    :type source_file: str or file
+    :param storage: Storage where upload files
+    :type storage: :class:`django.core.files.storage.Storage`
+    """
     def write_file(output_file, name):
+        """Upload to storage."""
         content = File(output_file, name)
         storage._save(content, name)
     # Save ICO
@@ -46,6 +57,12 @@ def generate(source_file, storage):
 
 
 def delete(storage):
+    """
+    Delete favicons from storage.
+
+    :param storage: Storage where delete files
+    :type storage: :class:`django.core.files.storage.Storage`
+    """
     storage.delete('favicon.ico')
     for size in PNG_SIZES:
         name = 'favicon-%s.png' % size
