@@ -50,6 +50,15 @@ class GenerateFaviconCommandTest(TestCase):
         self.assertFalse(HANDLED_FILES['written_files'])
         self.assertFalse(mocks[0].called)
 
+    def test_prefix(self, *mocks):
+        prefix = 'foo/'
+        expected_files = [prefix+fi for fi in EXPECTED_FILES]
+        execute_from_command_line(['', 'generate_favicon', BASE_IMG,
+                                   '--prefix=foo/'])
+        for name, content in HANDLED_FILES['written_files'].items():
+            self.assertIn(name, expected_files)
+            self.assertTrue(content.size)
+
 
 @patch('favicon.management.commands.delete_favicon.input',
        return_value='Yes')
@@ -74,3 +83,17 @@ class DeleteFaviconCommandTest(TestCase):
         execute_from_command_line(['', 'delete_favicon', '--noinput'])
         self.assertTrue(HANDLED_FILES['deleted_files'])
         self.assertFalse(mocks[0].called)
+
+    def test_prefix(self, *mocks):
+        prefix = 'foo/'
+        expected_files = [prefix+fi for fi in EXPECTED_FILES]
+
+        generate(BASE_IMG, self.storage, prefix)
+        execute_from_command_line(['', 'delete_favicon', '--prefix=foo/'])
+
+        for name, content in HANDLED_FILES['written_files'].items():
+            self.assertIn(name, EXPECTED_FILES)
+            self.assertNotIn(name, expected_files)
+        for name, content in HANDLED_FILES['deleted_files'].items():
+            self.assertIn(name, expected_files)
+            self.assertNotIn(name, EXPECTED_FILES)
