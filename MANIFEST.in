@@ -1,0 +1,2 @@
+recursive-include favicon * *.css *.html *.xml
+include requirements*.txt
