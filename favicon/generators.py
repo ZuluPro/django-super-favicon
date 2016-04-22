@@ -43,3 +43,13 @@ def generate(source_file, storage):
     output_content = template.render({'tile_color': 'FFFFFF'})
     output_file.write(output_content)
     write_file(output_file, 'ieconfig.xml')
+
+
+def delete(storage):
+    storage.delete('favicon.ico')
+    for size in PNG_SIZES:
+        name = 'favicon-%s.png' % size
+        storage.delete(name)
+    for _, name in WINDOWS_PNG_SIZES:
+        storage.delete(name)
+    storage.delete('ieconfig.xml')

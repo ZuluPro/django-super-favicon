@@ -26,6 +26,7 @@ class handled_files(dict):
 
     def clean(self):
         self['written_files'] = {}
+        self['deleted_files'] = {}
 HANDLED_FILES = handled_files()
 
 
@@ -39,3 +40,8 @@ class FakeStorage(Storage):
 
     def exists(self, name):
         return name in HANDLED_FILES['written_files'].keys()
+
+    def delete(self, name):
+        fi = HANDLED_FILES['written_files'].pop(name, None)
+        if fi:
+            HANDLED_FILES['deleted_files'][name] = fi

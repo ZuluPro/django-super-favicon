@@ -3,7 +3,7 @@ from django.test import TestCase
 from PIL import Image
 from favicon.tests.utils import HANDLED_FILES, BASE_IMG, EXPECTED_FILES,\
     FakeStorage
-from favicon.generators import generate, PNG_SIZES, WINDOWS_PNG_SIZES
+from favicon.generators import generate, delete, PNG_SIZES, WINDOWS_PNG_SIZES
 
 SRC_REG = re.compile(r'src="/static/([^"]*)"')
 
@@ -44,3 +44,20 @@ class GenerateTest(TestCase):
         ieconfig = self.storage._open('ieconfig.xml').read()
         for name in SRC_REG.findall(ieconfig):
             self.assertTrue(self.storage.exists(name))
+
+
+class DeleteTest(TestCase):
+    def setUp(self):
+        self.storage = FakeStorage()
+        generate(BASE_IMG, self.storage)
+
+    def tearDown(self):
+        HANDLED_FILES.clean()
+
+    def test_delete(self):
+        delete(self.storage)
+        self.assertFalse(HANDLED_FILES['written_files'])
+        self.assertTrue(HANDLED_FILES['deleted_files'])
+
+    def test_delete_not_existing(self):
+        delete(self.storage)
