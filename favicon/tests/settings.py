@@ -7,8 +7,10 @@ DATABASES = {
 }
 
 INSTALLED_APPS = [
+    'django.contrib.staticfiles',
     'favicon',
 ]
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/tmp'
 FAVICON_STORAGE = 'favicon.tests.utils.FakeStorage'

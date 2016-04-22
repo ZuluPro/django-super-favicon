@@ -45,3 +45,6 @@ class FakeStorage(Storage):
         fi = HANDLED_FILES['written_files'].pop(name, None)
         if fi:
             HANDLED_FILES['deleted_files'][name] = fi
+
+    def post_process(self):
+        pass

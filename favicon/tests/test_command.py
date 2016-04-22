@@ -1,3 +1,4 @@
+from mock import patch
 from django.test import TestCase
 from django.core.management import execute_from_command_line
 from favicon.management.commands.generate_favicon import Command as Generate
@@ -7,6 +8,8 @@ from favicon.utils import generate
 from favicon.tests.utils import FakeStorage
 
 
+@patch('favicon.management.commands.generate_favicon.input',
+       return_value='Yes')
 class GenerateFaviconCommandTest(TestCase):
     def setUp(self):
         self.command = Generate()
@@ -14,19 +17,42 @@ class GenerateFaviconCommandTest(TestCase):
     def tearDown(self):
         HANDLED_FILES.clean()
 
-    def test_execute_from_command_line(self):
+    def test_execute_from_command_line(self, *mocks):
         execute_from_command_line(['', 'generate_favicon', BASE_IMG])
         for name, content in HANDLED_FILES['written_files'].items():
             self.assertIn(name, EXPECTED_FILES)
             self.assertTrue(content.size)
 
-    def test_handle(self):
-        self.command.handle(source_file=[BASE_IMG])
-        for name, content in HANDLED_FILES['written_files'].items():
-            self.assertIn(name, EXPECTED_FILES)
-            self.assertTrue(content.size)
+    @patch('favicon.tests.utils.FakeStorage.post_process')
+    def test_post_process(self, *mocks):
+        execute_from_command_line(['', 'generate_favicon', BASE_IMG,
+                                   '--post-process'])
+        self.assertTrue(HANDLED_FILES['written_files'])
+        self.assertTrue(mocks[0].called)
+
+    def test_no_input(self, *mocks):
+        execute_from_command_line(['', 'generate_favicon', BASE_IMG,
+                                   '--noinput'])
+        self.assertTrue(HANDLED_FILES['written_files'])
+        self.assertFalse(mocks[0].called)
+
+    @patch('favicon.management.commands.generate_favicon.input',
+           return_value='No')
+    def test_dry_run(self, *mocks):
+        execute_from_command_line(['', 'generate_favicon', BASE_IMG,
+                                   '--dry-run'])
+        self.assertFalse(HANDLED_FILES['written_files'])
+
+    @patch('favicon.tests.utils.FakeStorage.post_process')
+    def test_dry_run_post_process(self, *mocks):
+        execute_from_command_line(['', 'generate_favicon', BASE_IMG,
+                                   '--post-process', '--dry-run'])
+        self.assertFalse(HANDLED_FILES['written_files'])
+        self.assertFalse(mocks[0].called)
 
 
+@patch('favicon.management.commands.delete_favicon.input',
+       return_value='Yes')
 class DeleteFaviconCommandTest(TestCase):
     def setUp(self):
         self.command = Delete()
@@ -36,12 +62,15 @@ class DeleteFaviconCommandTest(TestCase):
     def tearDown(self):
         HANDLED_FILES.clean()
 
-    def test_execute_from_command_line(self):
+    def test_execute_from_command_line(self, *mocks):
         execute_from_command_line(['', 'delete_favicon'])
-        for name, content in HANDLED_FILES['deleted_files'].items():
-            self.assertIn(name, EXPECTED_FILES)
+        self.assertTrue(HANDLED_FILES['deleted_files'])
 
-    def test_handle(self):
-        self.command.handle()
-        for name, content in HANDLED_FILES['deleted_files'].items():
-            self.assertIn(name, EXPECTED_FILES)
+    def test_dry_run(self, *mocks):
+        execute_from_command_line(['', 'delete_favicon', '--dry-run'])
+        self.assertFalse(HANDLED_FILES['deleted_files'])
+
+    def test_no_input(self, *mocks):
+        execute_from_command_line(['', 'delete_favicon', '--noinput'])
+        self.assertTrue(HANDLED_FILES['deleted_files'])
+        self.assertFalse(mocks[0].called)
