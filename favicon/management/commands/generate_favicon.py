@@ -13,6 +13,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('source_file', nargs=1, type=str,
                             help="Input file used to generate favicons")
+        parser.add_argument('--prefix', '-p', default=None,
+                            help="Prefix included in new files' names")
         parser.add_argument('--noinput', '-i', action='store_true', default=False,
                             help="Do NOT prompt the user for input of any kind.")
         parser.add_argument('--post-process', action='store_true', default=False,
@@ -22,6 +24,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         source_file = options['source_file'][0]
+        prefix = options['prefix']
         if not os.path.exists(source_file):
             raise CommandError("File '%s' does not exist." % source_file)
         storage = get_storage_class(settings.STORAGE)(**settings.STORAGE_OPTIONS)
@@ -36,7 +39,7 @@ class Command(BaseCommand):
         if options['dry_run']:
             self.stdout.write('No operation launched')
         else:
-            generate(source_file, storage)
+            generate(source_file, storage, prefix)
 
         if options['post_process']:
             self.stdout.write('Launch post process')

@@ -45,6 +45,15 @@ class GenerateTest(TestCase):
         for name in SRC_REG.findall(ieconfig):
             self.assertTrue(self.storage.exists(name))
 
+    def test_generate_with_prefix(self):
+        prefix = 'foo/'
+        expected_files = [prefix+fi for fi in EXPECTED_FILES]
+
+        generate(BASE_IMG, self.storage, prefix)
+        for name, content in HANDLED_FILES['written_files'].items():
+            self.assertIn(name, expected_files)
+            self.assertTrue(content.size)
+
 
 class DeleteTest(TestCase):
     def setUp(self):

@@ -14,7 +14,7 @@ WINDOWS_PNG_SIZES = (
 )
 
 
-def generate(source_file, storage):
+def generate(source_file, storage, prefix=None):
     """
     Creates favicons from a source file and upload into storage.
     This also create the ieconfig.xml file.
@@ -23,9 +23,14 @@ def generate(source_file, storage):
     :type source_file: str or file
     :param storage: Storage where upload files
     :type storage: :class:`django.core.files.storage.Storage`
+    :param prefix: Prefix included in new files' names
+    :type prefix: str
     """
+    prefix = prefix or ''
+
     def write_file(output_file, name):
         """Upload to storage."""
+        name = prefix + name
         content = File(output_file, name)
         storage._save(content, name)
     # Save ICO
