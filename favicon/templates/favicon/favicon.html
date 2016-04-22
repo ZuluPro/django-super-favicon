@@ -1,27 +1,27 @@
-{% load static %}
-<link rel="apple-touch-icon-precomposed" href="{% static "favicon-152.png" %}">
+{% load favicon %}
+<link rel="apple-touch-icon-precomposed" href="{% favicon_url "favicon-152.png" prefix %}">
 
 <meta name="msapplication-TileColor" content="#FFFFFF">
-<meta name="msapplication-TileImage" content="{% static "favicon-144.png" %}">
+<meta name="msapplication-TileImage" content="{% favicon_url "favicon-144.png" prefix %}">
 
 <meta name="application-name" content="Name">
 <meta name="msapplication-tooltip" content="Tooltip">
-<meta name="msapplication-config" content="{% static "ieconfig.xml" %}">
+<meta name="msapplication-config" content="{% favicon_url "ieconfig.xml" prefix %}">
 
-<link rel="icon" href="{% static "favicon-32.png" sizes="32x32" %}">
-<link rel="icon" href="{% static "favicon-57.png" sizes="57x57" %}">
-<link rel="icon" href="{% static "favicon-76.png" sizes="76x76" %}">
-<link rel="icon" href="{% static "favicon-96.png" sizes="96x96" %}">
-<link rel="icon" href="{% static "favicon-120.png" sizes="120x120" %}">
-<link rel="icon" href="{% static "favicon-128.png" sizes="128x128" %}">
-<link rel="icon" href="{% static "favicon-144.png" sizes="144x144" %}">
-<link rel="icon" href="{% static "favicon-152.png" sizes="152x152" %}">
-<link rel="icon" href="{% static "favicon-180.png" sizes="180x180" %}">
-<link rel="icon" href="{% static "favicon-195.png" sizes="195x195" %}">
-<link rel="icon" href="{% static "favicon-228.png" sizes="228x228" %}">
-<link rel="icon" href="{% static "smalltile.png" sizes="128x128" %}">
-<link rel="icon" href="{% static "mediumtile.png" sizes="270x270" %}">
-<link rel="icon" href="{% static "widetile.png" sizes="558x270" %}">
-<link rel="icon" href="{% static "largetile.png" sizes="558x558" %}">
-<link rel="shortcut icon" sizes="196x196" href="{% static "favicon-196.png" %}">
-<!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="{% static "favicon.ico" %}" /><![endif]-->
+<link rel="icon" href="{% favicon_url "favicon-32.png" prefix %}" sizes="32x32">
+<link rel="icon" href="{% favicon_url "favicon-57.png" prefix %}" sizes="57x57">
+<link rel="icon" href="{% favicon_url "favicon-76.png" prefix %}" sizes="76x76">
+<link rel="icon" href="{% favicon_url "favicon-96.png" prefix %}" sizes="96x96">
+<link rel="icon" href="{% favicon_url "favicon-120.png" prefix %}" sizes="120x120">
+<link rel="icon" href="{% favicon_url "favicon-128.png" prefix %}" sizes="128x128">
+<link rel="icon" href="{% favicon_url "favicon-144.png" prefix %}" sizes="144x144">
+<link rel="icon" href="{% favicon_url "favicon-152.png" prefix %}" sizes="152x152">
+<link rel="icon" href="{% favicon_url "favicon-180.png" prefix %}" sizes="180x180">
+<link rel="icon" href="{% favicon_url "favicon-195.png" prefix %}" sizes="195x195">
+<link rel="icon" href="{% favicon_url "favicon-228.png" prefix %}" sizes="228x228">
+<link rel="icon" href="{% favicon_url "smalltile.png" prefix %}" sizes="128x128">
+<link rel="icon" href="{% favicon_url "mediumtile.png" prefix %}" sizes="270x270">
+<link rel="icon" href="{% favicon_url "widetile.png" prefix %}" sizes="558x270">
+<link rel="icon" href="{% favicon_url "largetile.png" prefix %}" sizes="558x558">
+<link rel="shortcut icon" sizes="196x196" href="{% favicon_url "favicon-196.png" prefix %}">
+<!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="{% favicon_url "favicon.ico" prefix %}"/><![endif]-->

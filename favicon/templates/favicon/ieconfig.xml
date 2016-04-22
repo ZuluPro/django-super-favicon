@@ -1,12 +1,12 @@
-{% load static %}
+{% load favicon %}
 <?xml version="1.0" encoding="utf-8"?>
 <browserconfig>
   <msapplication>
     <tile>
-      <square70x70logo src="{% static "smalltile.png" %}"/>
-      <square150x150logo src="{% static "mediumtile.png" %}"/>
-      <wide310x150logo src="{% static "widetile.png" %}"/>
-      <square310x310logo src="{% static "largetile.png" %}"/>
+      <square70x70logo src="{% favicon_url "smalltile.png" prefix %}"/>
+      <square150x150logo src="{% favicon_url "mediumtile.png" prefix %}"/>
+      <wide310x150logo src="{% favicon_url "widetile.png" prefix %}"/>
+      <square310x310logo src="{% favicon_url "largetile.png" prefix %}"/>
       <TileColor>#{{ tile_color }}</TileColor>
     </tile>
   </msapplication>

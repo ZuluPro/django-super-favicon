@@ -3,6 +3,7 @@ from django.core.files.storage import Storage
 
 TEST_DIR = os.path.dirname(__file__)
 BASE_IMG = os.path.join(TEST_DIR, 'logo.png')
+BASE_URL = 'https://example.com/'
 
 EXPECTED_FILES = (
     'favicon.ico',
@@ -48,3 +49,6 @@ class FakeStorage(Storage):
 
     def post_process(self):
         pass
+
+    def url(self, name):
+        return BASE_URL + name
