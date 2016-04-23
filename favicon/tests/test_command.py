@@ -1,4 +1,4 @@
-from mock import patch
+from mock import patch, Mock
 from django.test import TestCase
 from django.core.management import execute_from_command_line
 from favicon.management.commands.generate_favicon import Command as Generate
@@ -19,6 +19,7 @@ class GenerateFaviconCommandTest(TestCase):
 
     def test_execute_from_command_line(self, *mocks):
         execute_from_command_line(['', 'generate_favicon', BASE_IMG])
+        self.assertTrue(HANDLED_FILES['written_files'])
         for name, content in HANDLED_FILES['written_files'].items():
             self.assertIn(name, EXPECTED_FILES)
             self.assertTrue(content.size)
@@ -55,9 +56,31 @@ class GenerateFaviconCommandTest(TestCase):
         expected_files = [prefix+fi for fi in EXPECTED_FILES]
         execute_from_command_line(['', 'generate_favicon', BASE_IMG,
                                    '--prefix=foo/'])
+        self.assertTrue(HANDLED_FILES['written_files'])
         for name, content in HANDLED_FILES['written_files'].items():
             self.assertIn(name, expected_files)
             self.assertTrue(content.size)
+
+    def test_source_file_from_storage(self, *mocks):
+        HANDLED_FILES['written_files']['logo.png'] = open(BASE_IMG, 'rb')
+        execute_from_command_line(['', 'generate_favicon', 'file://logo.png'])
+        self.assertTrue(HANDLED_FILES['written_files'])
+        for name, content in HANDLED_FILES['written_files'].items():
+            if 'logo.png' == name:
+                continue
+            self.assertIn(name, EXPECTED_FILES)
+            self.assertTrue(content.size)
+
+    @patch('favicon.management.commands.generate_favicon.urlopen',
+           return_value=Mock(fp=open(BASE_IMG, 'rb')))
+    def test_source_file_from_http(self, *mocks):
+        execute_from_command_line(['', 'generate_favicon',
+                                   'http://example.com/logo.png'])
+        self.assertTrue(HANDLED_FILES['written_files'])
+        for name, content in HANDLED_FILES['written_files'].items():
+            self.assertIn(name, EXPECTED_FILES)
+            self.assertTrue(content.size)
+        self.assertTrue(mocks[0].called)
 
 
 @patch('favicon.management.commands.delete_favicon.input',

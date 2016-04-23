@@ -1,18 +1,31 @@
 """Create favicons and upload into storage."""
-import os
+import re
+from shutil import copyfileobj
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.storage import get_storage_class
 from django.utils import six
 from favicon import settings
 from favicon.utils import generate
 
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
+
 input = raw_input if six.PY2 else input
+
+SOURCE_FILE_HELP = """Input file used to generate favicons, example:
+'/path/to/myfile.png' : Get from local filesystem root
+'path/to/myfile.png' : Get from local filesystem relative path
+'file://myfile.png' : Get from static file storage
+'http://example.com/myfile.png' : Get from HTTP server
+"""
 
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('source_file', nargs=1, type=str,
-                            help="Input file used to generate favicons")
+                            help=SOURCE_FILE_HELP)
         parser.add_argument('--prefix', '-p', default=None,
                             help="Prefix included in new files' names")
         parser.add_argument('--noinput', '-i', action='store_true', default=False,
@@ -23,11 +36,21 @@ class Command(BaseCommand):
                             help="Do everything except modify the filesystem.")
 
     def handle(self, *args, **options):
-        source_file = options['source_file'][0]
+        source_filename = options['source_file'][0]
         prefix = options['prefix']
-        if not os.path.exists(source_file):
-            raise CommandError("File '%s' does not exist." % source_file)
+
         storage = get_storage_class(settings.STORAGE)(**settings.STORAGE_OPTIONS)
+
+        if source_filename.startswith('file://'):
+            source_filename = source_filename.replace('file://', '')
+            source_file = storage.open(source_filename)
+        elif re.match(r'^https?://.*$', source_filename):
+            response = urlopen(source_filename)
+            source_file = six.BytesIO()
+            copyfileobj(response.fp, source_file)
+            source_file.seek(0)
+        else:
+            source_file = source_filename
 
         if not options['noinput']:
             answer = input("Are you sure you want to continue? [Y/n]")

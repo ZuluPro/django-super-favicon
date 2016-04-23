@@ -35,7 +35,7 @@ class FakeStorage(Storage):
     def _save(self, name, content):
         HANDLED_FILES['written_files'][name] = content
 
-    def _open(self, name):
+    def _open(self, name, mode='rb'):
         HANDLED_FILES['written_files'][name].seek(0)
         return HANDLED_FILES['written_files'][name]
 
