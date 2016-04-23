@@ -19,4 +19,5 @@ build:
 
 upload:
 	make clean
+	python setup.py sdist
 	python setup.py sdist upload
