@@ -4,10 +4,6 @@ Django Super Favicon
 .. image:: https://api.travis-ci.org/ZuluPro/django-super-favicon.svg
         :target: https://travis-ci.org/ZuluPro/django-super-favicon
 
-.. image:: https://readthedocs.org/projects/ZuluPro/badge/?version=latest
-        :target: https://readthedocs.org/projects/ZuluPro/?badge=latest
-        :alt: Documentation Status
-
 .. image:: https://coveralls.io/repos/ZuluPro/django-super-favicon/badge.svg?branch=master&service=github
         :target: https://coveralls.io/github/ZuluPro/django-super-favicon?branch=master
 
@@ -37,6 +33,76 @@ There are other Django projects in the same topic:
 - `django-favicon`_ : A view for serve favicon (Ouch)
 - `django-favicon-plus`_ : Make the same than mine, but through models and ImageField
 
+That's why *super* ...
+
+Install & usage
+===============
+
+::
+
+  pip install django-super-favicon
+
+Add the following things in your ``settings.py``: ::
+
+  INSTALLED_APPS = (
+      ...
+      'favicon',
+      ...
+  )
+
+Upload them to your storage (by default your filesystem): ::
+
+  ./manage.py generate_favicon your_icon.png
+
+And put this in your templates: ::
+
+  {% load favicon %}
+  ...
+  <head>
+  ...
+  {% get_favicons %}
+  </head>
+
+It will produce something like: ::
+
+  <link rel="apple-touch-icon-precomposed" href="/static/favicon-152.png">
+
+  <meta name="msapplication-TileColor" content="#FFFFFF">
+  <meta name="msapplication-TileImage" content="/static/favicon-144.png">
+
+  <meta name="application-name" content="Name">
+  <meta name="msapplication-tooltip" content="Tooltip">
+  <meta name="msapplication-config" content="/static/ieconfig.xml">
+
+  <link rel="icon" href="/static/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/static/favicon-57.png" sizes="57x57">
+  <link rel="icon" href="/static/favicon-76.png" sizes="76x76">
+  <link rel="icon" href="/static/favicon-96.png" sizes="96x96">
+  <link rel="icon" href="/static/favicon-120.png" sizes="120x120">
+  <link rel="icon" href="/static/favicon-128.png" sizes="128x128">
+  <link rel="icon" href="/static/favicon-144.png" sizes="144x144">
+  <link rel="icon" href="/static/favicon-152.png" sizes="152x152">
+  <link rel="icon" href="/static/favicon-180.png" sizes="180x180">
+  <link rel="icon" href="/static/favicon-195.png" sizes="195x195">
+  <link rel="icon" href="/static/favicon-228.png" sizes="228x228">
+  <link rel="icon" href="/static/smalltile.png" sizes="128x128">
+  <link rel="icon" href="/static/mediumtile.png" sizes="270x270">
+  <link rel="icon" href="/static/widetile.png" sizes="558x270">
+  <link rel="icon" href="/static/largetile.png" sizes="558x558">
+  <link rel="shortcut icon" sizes="196x196" href="/static/favicon-196.png">
+
+Settings
+========
+
+Super Favicon can be configured with the followings constants in
+``settings.py``:
+
+**FAVICON_STORAGE**: Storage class used for store favicons,
+default: ``settings.STATICFILES_STORAGE``
+
+**FAVICON_STORAGE_OPTIONS**: Options used for instanciate the custom storage.
+default: ``{}``
+
 
 Management Commands
 ===================
@@ -54,7 +120,6 @@ delete_favicon
 Delete previously created favicon
 
     delete_favicon
-
 
 Contributing
 ============

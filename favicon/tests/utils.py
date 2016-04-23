@@ -32,7 +32,7 @@ HANDLED_FILES = handled_files()
 
 
 class FakeStorage(Storage):
-    def _save(self, content, name=None):
+    def _save(self, name, content):
         HANDLED_FILES['written_files'][name] = content
 
     def _open(self, name):

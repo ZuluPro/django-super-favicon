@@ -33,7 +33,7 @@ def generate(source_file, storage, prefix=None):
         """Upload to storage."""
         name = prefix + name
         content = File(output_file, name)
-        storage._save(content, name)
+        storage._save(name, content)
     # Save ICO
     img = Image.open(source_file)
     output_file = BytesIO()
