@@ -10,28 +10,23 @@ python:
 
 env:
   matrix:
-    - DJANGO=1.6
-    - DJANGO=1.7
     - DJANGO=1.8
     - DJANGO=1.9
 
 install:
   - TOX_ENV=py${TRAVIS_PYTHON_VERSION}-django${DJANGO}
-  - pip install tox coveralls
+  - pip install tox
   - tox -e $TOX_ENV --notest
 
 script:
   - tox -e $TOX_ENV
 
 after_success:
+  - tox -e $TOX_ENV -- pip install coveralls 
   - tox -e $TOX_ENV -- coveralls $COVERALLS_OPTION
 
 matrix:
   exclude:
-    - python: "3.5"
-      env: DJANGO=1.6
-    - python: "3.5"
-      env: DJANGO=1.7
     - python: "3.2"
       env: DJANGO=1.9
     - python: "3.3"
