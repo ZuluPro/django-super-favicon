@@ -32,6 +32,8 @@ class Command(BaseCommand):
                             help="Do NOT prompt the user for input of any kind.")
         parser.add_argument('--post-process', action='store_true', default=False,
                             help="Do post process collected files.")
+        parser.add_argument('--replace', '-r', action='store_true', default=False,
+                            help="Delete file if already existing.")
         parser.add_argument('--dry-run', '-n', action='store_true', default=False,
                             help="Do everything except modify the filesystem.")
 
@@ -62,7 +64,7 @@ class Command(BaseCommand):
         if options['dry_run']:
             self.stdout.write('No operation launched')
         else:
-            generate(source_file, storage, prefix)
+            generate(source_file, storage, prefix, options['replace'])
 
         if options['post_process']:
             self.stdout.write('Launch post process')
