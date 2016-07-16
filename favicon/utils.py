@@ -45,6 +45,12 @@ def generate(source_file, storage, prefix=None, replace=False):
                 return
         content = File(output_file, name)
         storage._save(name, content)
+
+    def save_PNG(img, output_name, size):
+        img.thumbnail(size=size, resample=Image.ANTIALIAS)
+        output_file = BytesIO()
+        img.save(output_file, format='PNG')
+        write_file(output_file, output_name)
     # Save ICO
     img = Image.open(source_file)
     output_file = BytesIO()
