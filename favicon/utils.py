@@ -13,6 +13,7 @@ WINDOWS_PNG_SIZES = (
     ((558, 270), 'widetile.png'),
     ((558, 558), 'largetile.png'),
 )
+FILLED_SIZES = (152,)
 
 def alpha_to_color(image, color=(255, 255, 255)):
     bg = Image.new('RGBA', image.size, color)
