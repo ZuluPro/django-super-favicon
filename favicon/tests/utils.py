@@ -12,6 +12,7 @@ EXPECTED_FILES = (
     'favicon-32.png', 'favicon-57.png', 'favicon-76.png', 'favicon-96.png',
     'favicon-120.png', 'favicon-128.png', 'favicon-144.png', 'favicon-152.png',
     'favicon-180.png', 'favicon-195.png', 'favicon-196.png', 'favicon-228.png',
+    'favicon-precomposed-152.png',
 )
 
 
