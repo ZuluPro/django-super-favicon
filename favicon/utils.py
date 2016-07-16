@@ -33,6 +33,8 @@ def generate(source_file, storage, prefix=None, replace=False, fill=None):
     :type prefix: str
     :param replace: Delete file is already existing.
     :type replace: bool
+    :param fill: Background color for generated 'precomposed-' icons
+    :type fill: tuple of length 3, as returned by ImageColor.getrgb(color)
     """
     prefix = prefix or ''
 
