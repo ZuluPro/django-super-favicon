@@ -64,7 +64,7 @@ def generate(source_file, storage, prefix=None, replace=False):
     output_name = 'ieconfig.xml'
     output_file = StringIO()
     template = get_template('favicon/ieconfig.xml')
-    output_content = template.render(Context({'tile_color': 'FFFFFF'}))
+    output_content = template.render({'tile_color': 'FFFFFF'})
     output_file.write(output_content)
     write_file(output_file, 'ieconfig.xml')
 
