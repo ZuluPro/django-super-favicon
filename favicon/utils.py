@@ -14,6 +14,10 @@ WINDOWS_PNG_SIZES = (
     ((558, 558), 'largetile.png'),
 )
 
+def alpha_to_color(image, color=(255, 255, 255)):
+    bg = Image.new('RGBA', image.size, color)
+    bg.paste(image, image)
+    return color and bg or image
 
 def generate(source_file, storage, prefix=None, replace=False):
     """
