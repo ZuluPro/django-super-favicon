@@ -64,7 +64,7 @@ class Command(BaseCommand):
         if options['dry_run']:
             self.stdout.write('No operation launched')
         else:
-            generate(source_file, storage, prefix, options['replace'])
+            generate(source_file, storage, prefix, options['replace'], settings.PRECOMPOSED_BGCOLOR)
 
         if options['post_process']:
             self.stdout.write('Launch post process')
