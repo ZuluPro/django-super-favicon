@@ -12,9 +12,18 @@ WINDOWS_PNG_SIZES = (
     ((558, 270), 'widetile.png'),
     ((558, 558), 'largetile.png'),
 )
+FILLED_SIZES = (152,)
 
+def alpha_to_color(image, color):
+    color = color or (255, 255, 255)
+    bg = Image.new('RGBA', image.size, color)
+    try:
+        bg.paste(image, image)
+    except ValueError:
+        return image
+    return color and bg or image
 
-def generate(source_file, storage, prefix=None, replace=False):
+def generate(source_file, storage, prefix=None, replace=False, fill=None):
     """
     Creates favicons from a source file and upload into storage.
     This also create the ieconfig.xml file.
@@ -27,6 +36,8 @@ def generate(source_file, storage, prefix=None, replace=False):
     :type prefix: str
     :param replace: Delete file is already existing.
     :type replace: bool
+    :param fill: Background color for generated precomposed-* icons
+    :type fill: tuple of length 3, as returned by PIL.ImageColor.getrgb(color)
     """
     prefix = prefix or ''
 
@@ -40,6 +51,12 @@ def generate(source_file, storage, prefix=None, replace=False):
                 return
         content = File(output_file, name)
         storage._save(name, content)
+
+    def save_png(img, output_name, size):
+        img.thumbnail(size=size, resample=Image.ANTIALIAS)
+        output_file = BytesIO()
+        img.save(output_file, format='PNG')
+        write_file(output_file, output_name)
     # Save ICO
     img = Image.open(source_file)
     output_file = BytesIO()
@@ -48,17 +65,13 @@ def generate(source_file, storage, prefix=None, replace=False):
     # Save PNG
     for size in PNG_SIZES:
         img = Image.open(source_file)
-        output_file = BytesIO()
-        output_name = 'favicon-%s.png' % size
-        img.thumbnail(size=(size, size), resample=Image.ANTIALIAS)
-        img.save(output_file, format='PNG')
-        write_file(output_file, output_name)
+        save_png(img, 'favicon-%s.png' % size, (size, size))
     for size, output_name in WINDOWS_PNG_SIZES:
         img = Image.open(source_file)
-        output_file = BytesIO()
-        img.thumbnail(size=size, resample=Image.ANTIALIAS)
-        img.save(output_file, format='PNG')
-        write_file(output_file, output_name)
+        save_png(img, output_name, size)
+    for size in FILLED_SIZES:
+        img = alpha_to_color(Image.open(source_file), fill)
+        save_png(img, 'favicon-precomposed-%s.png' % size, (size, size))
     # Create ieconfig.xml
     output_name = 'ieconfig.xml'
     output_file = StringIO()
@@ -88,5 +101,8 @@ def delete(storage, prefix=None):
         name = 'favicon-%s.png' % size
         delete_file(name)
     for _, name in WINDOWS_PNG_SIZES:
+        delete_file(name)
+    for size in FILLED_SIZES:
+        name = 'favicon-precomposed-%s.png' % size
         delete_file(name)
     delete_file('ieconfig.xml')
