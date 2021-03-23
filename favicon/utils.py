@@ -1,5 +1,5 @@
 """Utilities for :mod:`favicon`."""
-from django.utils.six import BytesIO, StringIO
+import io
 from django.template.loader import get_template
 from django.core.files import File
 from PIL import Image
@@ -54,12 +54,12 @@ def generate(source_file, storage, prefix=None, replace=False, fill=None):
 
     def save_png(img, output_name, size):
         img.thumbnail(size=size, resample=Image.ANTIALIAS)
-        output_file = BytesIO()
+        output_file = io.BytesIO()
         img.save(output_file, format='PNG')
         write_file(output_file, output_name)
     # Save ICO
     img = Image.open(source_file)
-    output_file = BytesIO()
+    output_file = io.BytesIO()
     img.save(fp=output_file, format='ICO', sizes=ICO_SIZES)
     write_file(output_file, 'favicon.ico')
     # Save PNG
@@ -74,7 +74,7 @@ def generate(source_file, storage, prefix=None, replace=False, fill=None):
         save_png(img, 'favicon-precomposed-%s.png' % size, (size, size))
     # Create ieconfig.xml
     output_name = 'ieconfig.xml'
-    output_file = StringIO()
+    output_file = io.StringIO()
     template = get_template('favicon/ieconfig.xml')
     output_content = template.render({'tile_color': 'FFFFFF'})
     output_file.write(output_content)

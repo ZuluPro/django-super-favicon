@@ -1,17 +1,13 @@
 language: python
 
 python:
-  - "2.7"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "pypy"
-  - "pypy3"
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
 env:
   matrix:
-    - DJANGO=1.8
-    - DJANGO=1.9
+    - DJANGO=3.0
 
 install:
   - TOX_ENV=py${TRAVIS_PYTHON_VERSION}-django${DJANGO}
@@ -24,12 +20,3 @@ script:
 after_success:
   - tox -e $TOX_ENV -- pip install coveralls 
   - tox -e $TOX_ENV -- coveralls $COVERALLS_OPTION
-
-matrix:
-  exclude:
-    - python: "3.2"
-      env: DJANGO=1.9
-    - python: "3.3"
-      env: DJANGO=1.9
-    - python: "pypy3"
-      env: DJANGO=1.9

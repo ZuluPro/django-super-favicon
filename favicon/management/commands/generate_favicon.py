@@ -1,9 +1,9 @@
 """Create favicons and upload into storage."""
+import io
 import re
 from shutil import copyfileobj
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.storage import get_storage_class
-from django.utils import six
 from favicon import settings
 from favicon.utils import generate
 
@@ -12,7 +12,6 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
-input = raw_input if six.PY2 else input
 
 SOURCE_FILE_HELP = """Input file used to generate favicons, example:
 '/path/to/myfile.png' : Get from local filesystem root
@@ -48,7 +47,7 @@ class Command(BaseCommand):
             source_file = storage.open(source_filename)
         elif re.match(r'^https?://.*$', source_filename):
             response = urlopen(source_filename)
-            source_file = six.BytesIO()
+            source_file = io.BytesIO()
             copyfileobj(response.fp, source_file)
             source_file.seek(0)
         else:

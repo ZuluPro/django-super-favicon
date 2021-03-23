@@ -4,7 +4,7 @@ Django app for:
 - Put in a storage backend
 - Include HTML tags for use favicon
 """
-VERSION = (0, 6, 1)
+VERSION = (0, 7, 0)
 __version__ = '.'.join([str(i) for i in VERSION])
 __author__ = 'Anthony Monthe (ZuluPro)'
 __email__ = 'anthony.monthe@gmail.com'
