@@ -14,6 +14,11 @@ WINDOWS_PNG_SIZES = (
 )
 FILLED_SIZES = (152,)
 
+try:
+    RESAMPLE = Image.ANTIALIAS
+except AttributeError:
+    RESAMPLE = Image.LANCZOS
+
 def alpha_to_color(image, color):
     color = color or (255, 255, 255)
     bg = Image.new('RGBA', image.size, color)
@@ -53,7 +58,7 @@ def generate(source_file, storage, prefix=None, replace=False, fill=None):
         storage._save(name, content)
 
     def save_png(img, output_name, size):
-        img.thumbnail(size=size, resample=Image.ANTIALIAS)
+        img.thumbnail(size=size, resample=RESAMPLE)
         output_file = io.BytesIO()
         img.save(output_file, format='PNG')
         write_file(output_file, output_name)
